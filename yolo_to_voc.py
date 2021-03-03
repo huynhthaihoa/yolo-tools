@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Fri Aug 17 22:10:01 2018
+Created on March 3rd 2021
 
-@author: Caroline Pacheco do E. Silva
+@author: Thai-Hoa Huynh
 """
 
 import os
@@ -12,10 +12,8 @@ import cv2
 from xml.dom.minidom import parseString
 from lxml.etree import Element, SubElement, tostring
 import numpy as np
-from os.path import join
 import argparse
 
-## converts the normalized positions  into integer positions
 def unconvert(class_id, width, height, x, y, w, h):
     '''
     Convert the normalized positions into integer positions:

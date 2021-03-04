@@ -45,7 +45,11 @@ def xml_transform(classes, inputImg, inputAnn, outputImg, outputAnn):
     @outputImg [in]:
     @outputAnn [in]:
     ''' 
-    imgs = glob(inputImg + '/*.jpg') + glob(inputImg + '/*.png')
+    imgs = []
+    exts = ['/*.jpg', '/*.png', '/*.jpeg', '/*.jfif']
+    for ext in exts:
+        imgs += glob(inputImg + ext)
+    # imgs = glob(inputImg + '/*.jpg') + glob(inputImg + '/*.png') 
     ids = [os.path.basename(x) for x in imgs]
     for i, imgpath in enumerate(imgs):
         img= cv2.imread(imgpath)
@@ -125,11 +129,11 @@ if __name__ == "__main__":
     parser.add_argument("-ii", "--input_img", help="Directory of input images",
                     type=str, default="coco/images")
     parser.add_argument("-ia", "--input_ann", help="Directory of YOLO annotation files (.txt)",
-                    type=str, default="coco/labels")
+                    type=str, default="coco/yolo")
     parser.add_argument("-oi", "--output_img", help="Directory of output images",
                     type=str, default="coco/images_2")
     parser.add_argument("-oa", "--output_ann", help="Directory of output Pascal VOC annotation files (.xml)",
-                    type=str, default="coco/outputs")
+                    type=str, default="coco/voc")
     parser.add_argument("-c", "--class_file", help="Directory of class file",
                     type=str, default="obj.names")
     args = parser.parse_args()

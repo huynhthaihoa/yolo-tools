@@ -64,9 +64,9 @@ def txt_transform(classes, inputAnn, outputAnn):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-y", "--output_ann", help="Directory of YOLO annotation files (.txt)",
-                    type=str, default="coco/labels")
+                    type=str, default="coco/yolo")
     parser.add_argument("-p", "--input_ann", help="Directory of Pascal VOC annotation files (.xml)",
-                    type=str, default="coco/outputs")
+                    type=str, default="coco/voc")
     parser.add_argument("-c", "--class_file", help="Directory of class file",
                     type=str, default="obj.names")
     args = parser.parse_args()
@@ -74,8 +74,8 @@ if __name__ == "__main__":
     outputAnns = args.output_ann
     if os.path.isdir(outputAnns) is False:
         os.mkdir(outputAnns)
-    classes = open(args.class_file, "rt")
-    YOLO_CLASSES = list()
-    for line in classes:
-        YOLO_CLASSES.append(line[:-1])
-    txt_transform(YOLO_CLASSES, inputAnns, outputAnns)
+    classFile = open(args.class_file, "rt")
+    classes = list()
+    for line in classFile:
+        classes.append(line[:-1])
+    txt_transform(classes, inputAnns, outputAnns)

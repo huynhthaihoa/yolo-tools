@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
+Convert annotation files from YOLO format (.txt) to Pascal VOC format (.xml)
 Created on March 3rd 2021
 
 @author: Thai-Hoa Huynh
+@credit: original Github repository (https://github.com/carolinepacheco/Convert-YOLO-to-PascalVOC)
 """
 
 import os
 from glob import glob
 import cv2
-from xml.dom.minidom import parseString
 from lxml.etree import Element, SubElement, tostring
 import numpy as np
 import argparse
@@ -49,7 +50,6 @@ def xml_transform(classes, inputImg, inputAnn, outputImg, outputAnn):
     exts = ['/*.jpg', '/*.png', '/*.jpeg', '/*.jfif']
     for ext in exts:
         imgs += glob(inputImg + ext)
-    # imgs = glob(inputImg + '/*.jpg') + glob(inputImg + '/*.png') 
     ids = [os.path.basename(x) for x in imgs]
     for i, imgpath in enumerate(imgs):
         img= cv2.imread(imgpath)
@@ -81,7 +81,7 @@ def xml_transform(classes, inputImg, inputAnn, outputImg, outputAnn):
         node_segmented = SubElement(node_root, 'segmented')
         node_segmented.text = '0'
 
-        label_norm= np.loadtxt(target).reshape(-1, 5)
+        label_norm = np.loadtxt(target).reshape(-1, 5)
 
         for j in range(len(label_norm)):
             labels_conv = label_norm[j]
@@ -128,7 +128,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-ii", "--input_img", help="Directory of input images",
                     type=str, default="coco/images")
-    parser.add_argument("-ia", "--input_ann", help="Directory of YOLO annotation files (.txt)",
+    parser.add_argument("-ia", "--input_ann", help="Directory of input YOLO annotation files (.txt)",
                     type=str, default="coco/yolo")
     parser.add_argument("-oi", "--output_img", help="Directory of output images",
                     type=str, default="coco/images_2")
@@ -150,5 +150,4 @@ if __name__ == "__main__":
     for line in classes:
         YOLO_CLASSES = YOLO_CLASSES + (line[:-1], )
     xml_transform(YOLO_CLASSES, inputImgs, inputAnns, outputImgs, outputAnns)
-    #xml_transform(ROOT, YOLO_CLASSES)
-    #print(YOLO_CLASSES)
+    print('Converting YOLO to Pascal VOC finished!')

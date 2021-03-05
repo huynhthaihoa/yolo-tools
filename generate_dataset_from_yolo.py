@@ -1,3 +1,10 @@
+"""
+Generate label dataset using YOLO annotation files
+Created on March 4th 2021
+
+@author: Thai-Hoa Huynh
+"""
+
 import os
 from glob import glob
 import cv2
@@ -31,7 +38,7 @@ if __name__ == "__main__":
     parser.add_argument("-c", "--class_file", help="Class name file (.txt)",
                     type=str, default="obj.names")
     parser.add_argument("-o", "--output", help="Output directory to contain dataset",
-                    type=str, default="Label/")
+                    type=str, default="Labels/")
     args = parser.parse_args()
     imgDir = args.img
     annDir = args.ann + '/'
@@ -42,7 +49,10 @@ if __name__ == "__main__":
     classFile = open(args.class_file, "rt")
     classes = []
     for line in classFile:
-        classes.append(line[:-1])
+        if line[-1] == '\n':
+            classes.append(line[:-1])
+        else:
+            classes.append(line)
     exts = ['/*.jpg', '/*.png', '/*.jpeg', '/*.jfif']
     imgs = []
     for ext in exts:
@@ -56,12 +66,13 @@ if __name__ == "__main__":
             inFile = open(annpath, "rt")
             for j, line in enumerate(inFile):
                 elems = line.split(' ')
-                className = classes[elems[0]]
+                className = classes[int(elems[0])]
                 classDir = out + className
                 if os.path.isdir(classDir) is False:
                     os.mkdir(classDir)
                 classDir += '/'
-                (xmin, xmax, ymin, ymax) = unconvert(width, height, elems[1], elems[2], elems[3], elems[4])
+                (xmin, xmax, ymin, ymax) = unconvert(width, height, float(elems[1]), float(elems[2]), float(elems[3]), float(elems[4]))
                 cropImg = img[ymin : ymax, xmin : xmax]
                 cv2.imwrite(classDir + ids[i].split('.')[0] + '_' + str(j) + '.jpg', cropImg)
             inFile.close()
+    print('Generating dataset from YOLO annotation finished!')

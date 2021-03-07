@@ -73,6 +73,9 @@ if __name__ == "__main__":
                 classDir += '/'
                 (xmin, xmax, ymin, ymax) = unconvert(width, height, float(elems[1]), float(elems[2]), float(elems[3]), float(elems[4]))
                 cropImg = img[ymin : ymax, xmin : xmax]
-                cv2.imwrite(classDir + ids[i].split('.')[0] + '_' + str(j) + '.jpg', cropImg)
+                try:
+                    cv2.imwrite(classDir + ids[i].split('.')[0] + '_' + str(j) + '.jpg', cropImg)
+                except:
+                    pass
             inFile.close()
     print('Generating dataset from YOLO annotation finished!')

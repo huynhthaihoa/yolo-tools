@@ -31,6 +31,7 @@ if __name__ == "__main__":
     exts = ['/*.jpg', '/*.png', '/*.jpeg', '/*.jfif']
     classFile = open(args.class_file, "rt")
     classes = list()
+    data = dict()
     for line in classFile:
         if line[-1] == '\n':
             classes.append(line[:-1])
@@ -47,18 +48,22 @@ if __name__ == "__main__":
             imgs += glob(subdir + ext)
             for imgpath in imgs:
                 basename = os.path.basename(imgpath)
-                annname = basename.split('_')[0]
+                annname = basename[:basename.rfind('_')]
                 annpath = anns + annname + '.txt'
-                order = int((basename.split('_')[1]).split('.')[0])
+                order = int(basename[basename.rfind('_') + 1: basename.rfind('.')])
                 if os.path.isfile(annpath) is True:
-                    data = np.loadtxt(annpath).reshape(-1, 5)
+                    if annpath not in data:
+                        data[annpath] = np.loadtxt(annpath).reshape(-1, 5)
                     if new != '':
+                        oldpath = annpath
                         annpath = new + annname + '.txt'
+                        data[annpath] = data[oldpath]
                     annfile = open(annpath, "wt")
-                    for i in range(len(data)):
-                        data_conv = data[i]
+                    for i in range(len(data[annpath])):
+                        data_conv = data[annpath][i]
                         if i == order:
                             data_conv[0] = cls_id
+                            data[annpath][0] = cls_id
                         for j in range(5):
                             if(j == 0):
                                 annfile.write(str(int(data_conv[j])))

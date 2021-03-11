@@ -66,7 +66,10 @@ if __name__ == "__main__":
             inFile = open(annpath, "rt")
             for j, line in enumerate(inFile):
                 elems = line.split(' ')
-                className = classes[int(elems[0])]
+                try:
+                    className = classes[int(elems[0])]
+                except:
+                    className = 'outlier'
                 classDir = out + className
                 if os.path.isdir(classDir) is False:
                     os.mkdir(classDir)
@@ -74,6 +77,7 @@ if __name__ == "__main__":
                 (xmin, xmax, ymin, ymax) = unconvert(width, height, float(elems[1]), float(elems[2]), float(elems[3]), float(elems[4]))
                 cropImg = img[ymin : ymax, xmin : xmax]
                 try:
+                    print(".", end="", flush=True)
                     cv2.imwrite(classDir + ids[i].split('.')[0] + '_' + str(j) + '.jpg', cropImg)
                 except:
                     pass

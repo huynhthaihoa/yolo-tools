@@ -48,8 +48,21 @@ if __name__ == "__main__":
                 bboxes.append([float(elems[1]), float(elems[2]), float(elems[3]), float(elems[4]), int(elems[0])])
             lines.close()
             image = cv2.imread(imgpath)
-            for i in range(n):
-                transform = A.Compose([A.RandomBrightnessContrast(p=0.2), A.RandomFog(p=0.2), A.RandomSnow(p=0.2), A.RandomRain(p=0.2), A.RandomSunFlare(p=0.2), A.ShiftScaleRotate(p=0.2)], bbox_params=A.BboxParams(format="yolo"))
+            for i in range(n):#A.ShiftScaleRotate(p=0.2)
+                print(".", end="", flush=True)
+                transform_list = list()
+                seed_weather = random.randint(0, 2)
+                seed_contrast = random.randint(0, 2)
+                seed_rotate = random.randint(0, 2)
+                if seed_weather == 0:
+                    transform_list.append(A.RandomSnow(p=0.5))
+                else:
+                    transform_list.append(A.RandomRain(p=0.5))
+                if seed_contrast == 1:
+                    transform_list.append(A.RandomBrightnessContrast(p=0.5))
+                if seed_rotate == 1:
+                    transform_list.append(A.ShiftScaleRotate(p=0.5, rotate_limit=15))
+                transform = A.Compose(transforms=transform_list, bbox_params=A.BboxParams(format="yolo"))
                 res = transform(image=image, bboxes=bboxes)
                 outputimgpath = outputImgs + originname + '-' + str(i) + '.jpg'
                 outputannpath = outputAnns + originname + '-' + str(i) + '.txt'

@@ -9,8 +9,9 @@ import os
 from glob import glob
 import cv2
 import xml.etree.ElementTree as ET
-import numpy as np
+#import numpy as np
 import argparse
+from PIL import Image
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -36,7 +37,8 @@ if __name__ == "__main__":
         annpath = anns + ids[i].split('.')[0] + '.xml'
         if os.path.isfile(annpath) is True:
             print(annpath)
-            img = cv2.imread(imgpath)
+            #img = cv2.imread(imgpath)
+            img = Image.open(imgpath)
             inFile = open(annpath)
             tree = ET.parse(inFile)
             root = tree.getroot()
@@ -47,9 +49,12 @@ if __name__ == "__main__":
                     os.mkdir(classDir)
                 classDir += '/'
                 xmlbox = obj.find('bndbox')
-                cropImg = img[int(xmlbox.find('ymin').text): int(xmlbox.find('ymax').text), int(xmlbox.find('xmin').text): int(xmlbox.find('xmax').text)]
+                #cropImg = img[int(xmlbox.find('ymin').text): int(xmlbox.find('ymax').text), int(xmlbox.find('xmin').text): int(xmlbox.find('xmax').text)]
+                cropArea = (int(xmlbox.find('xmin').text), int(xmlbox.find('ymin').text), int(xmlbox.find('xmax').text), int(xmlbox.find('ymax').text))
+                cropImg = img.crop(cropArea)
                 try:
-                    cv2.imwrite(classDir + ids[i].split('.')[0] + '_' + str(j) + '.jpg', cropImg)
+                    cropImg.save(classDir + ids[i].split('.')[0] + '_' + str(j) + '.jpg')
+                    #cv2.imwrite(classDir + ids[i].split('.')[0] + '_' + str(j) + '.jpg', cropImg)
                 except:
                     pass
             inFile.close()

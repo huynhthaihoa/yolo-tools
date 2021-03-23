@@ -8,8 +8,8 @@ Created on March 4th 2021
 import os
 from shutil import copy
 from glob import glob
-import cv2
-import numpy as np
+#import cv2
+#import numpy as np
 import argparse
 import xml.etree.ElementTree as ET
 

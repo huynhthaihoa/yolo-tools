@@ -7,9 +7,10 @@ Created on March 4th 2021
 
 import os
 from glob import glob
-import cv2
-import numpy as np
+#import cv2
+#import numpy as np
 import argparse
+from PIL import Image
 
 def unconvert(width, height, x, y, w, h):
     '''
@@ -58,11 +59,14 @@ if __name__ == "__main__":
     for ext in exts:
         imgs += glob(imgDir + ext)
     ids = [os.path.basename(x) for x in imgs]
+    log = open("log_generate.txt", "wt")
     for i, imgpath in enumerate(imgs):
         annpath = annDir + ids[i].split('.')[0] + '.txt'
         if os.path.isfile(annpath) is True:
-            img = cv2.imread(imgpath)
-            height, width, _ = img.shape
+            #img = cv2.imread(imgpath)
+            img = Image.open(imgpath)
+            #height, width, _ = img.shape
+            width, height = img.size
             inFile = open(annpath, "rt")
             for j, line in enumerate(inFile):
                 elems = line.split(' ')
@@ -75,11 +79,17 @@ if __name__ == "__main__":
                     os.mkdir(classDir)
                 classDir += '/'
                 (xmin, xmax, ymin, ymax) = unconvert(width, height, float(elems[1]), float(elems[2]), float(elems[3]), float(elems[4]))
-                cropImg = img[ymin : ymax, xmin : xmax]
+                #cropImg = img[ymin : ymax, xmin : xmax]
+                cropArea = (xmin, ymin, xmax, ymax)#(left, upper, right, lower)
+                cropImg = img.crop(cropArea)
                 try:
+                    
                     print(".", end="", flush=True)
-                    cv2.imwrite(classDir + ids[i].split('.')[0] + '_' + str(j) + '.jpg', cropImg)
+                    cropImg.save(classDir + ids[i].split('.')[0] + '_' + str(j) + '.jpg')
+                    #cv2.imwrite(classDir + ids[i].split('.')[0] + '_' + str(j) + '.jpg', cropImg)
                 except:
+                    log.write(imgpath + '\n')
                     pass
             inFile.close()
+    log.close()
     print('Generating dataset from YOLO annotation finished!')

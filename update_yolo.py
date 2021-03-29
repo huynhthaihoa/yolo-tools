@@ -42,7 +42,8 @@ if __name__ == "__main__":
         try:
             cls_id = classes.index(os.path.basename(subdir))
         except:
-            continue
+            cls_id = -1
+            #continue
         imgs = []
         for ext in exts:
             imgs += glob(subdir + ext)
@@ -63,9 +64,9 @@ if __name__ == "__main__":
                         if i == order:
                             print(".", end="", flush=True)
                             if(int(data[annpath][i][0]) != cls_id):
-                                print(str(data[annpath][i][0]) + ':' +str(cls_id))
+                                #print(str(data[annpath][i][0]) + ':' +str(cls_id))
                                 #print(".", end="", flush=True)
-                            data[annpath][i][0] = cls_id
+                                data[annpath][i][0] = cls_id
                             break
     for annpath in data:
         print(",", end="", flush=True)
@@ -73,6 +74,8 @@ if __name__ == "__main__":
         n_bboxes = len(data[annpath])
         for i in range(n_bboxes):
             data_conv = data[annpath][i]
+            if(int(data_conv[0]) == -1):
+                continue
             for j in range(5):
                 if(j == 0):
                     annfile.write(str(int(data_conv[j])))

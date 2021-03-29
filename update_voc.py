@@ -43,7 +43,7 @@ if __name__ == "__main__":
     for subdir in subdirs:
         classname = os.path.basename(subdir) 
         if classname not in classes:
-            continue
+            classname = 'remove'
         imgs = []
         for ext in exts:
             imgs += glob(subdir + ext)
@@ -60,8 +60,12 @@ if __name__ == "__main__":
                     root = tree.getroot()
                     for j, obj in enumerate(root.iter('object')):
                         if j == order:
-                            node = obj.find('name')
-                            node.text = classname
+                            if classname == 'remove':
+                                root.remove(obj)
+                            else:# classname != node.text:
+                                node = obj.find('name')
+                                if classname != node.text:
+                                    node.text = classname
                             break
                     tree.write(annpath)
     print('Updating Pascal VOC annotation finished!')

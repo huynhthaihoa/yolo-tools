@@ -78,7 +78,11 @@ if __name__ == "__main__":
                 if os.path.isdir(classDir) is False:
                     os.mkdir(classDir)
                 classDir += '/'
-                (xmin, xmax, ymin, ymax) = unconvert(width, height, float(elems[1]), float(elems[2]), float(elems[3]), float(elems[4]))
+                try:
+                    (xmin, xmax, ymin, ymax) = unconvert(width, height, float(elems[1]), float(elems[2]), float(elems[3]), float(elems[4]))
+                except:
+                    log.write(annpath + '\n')
+                    continue
                 #cropImg = img[ymin : ymax, xmin : xmax]
                 cropArea = (xmin, ymin, xmax, ymax)#(left, upper, right, lower)
                 cropImg = img.crop(cropArea)

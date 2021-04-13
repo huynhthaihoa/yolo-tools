@@ -51,6 +51,7 @@ if __name__ == "__main__":
             for i in range(n):#A.ShiftScaleRotate(p=0.2)
                 print(".", end="", flush=True)
                 transform_list = list()
+                #A.Resize()
                 seed_weather = random.randint(0, 2)
                 seed_contrast = random.randint(0, 2)
                 seed_rotate = random.randint(0, 2)

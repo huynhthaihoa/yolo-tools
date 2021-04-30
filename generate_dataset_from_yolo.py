@@ -61,8 +61,12 @@ if __name__ == "__main__":
     ids = [os.path.basename(x) for x in imgs]
     log = open("log_generate.txt", "wt")
     for i, imgpath in enumerate(imgs):
-        annpath = annDir + ids[i].split('.')[0] + '.txt'
+        #print(imgpath)
+        annpath = annDir + ids[i][: ids[i].rfind('.')] + '.txt'
+        #annpath = annDir + ids[i].split('.')[0] + '.txt'
+        #print(annpath)
         if os.path.isfile(annpath) is True:
+            
             #img = cv2.imread(imgpath)
             img = Image.open(imgpath)
             #height, width, _ = img.shape
@@ -85,10 +89,9 @@ if __name__ == "__main__":
                     continue
                 #cropImg = img[ymin : ymax, xmin : xmax]
                 cropArea = (xmin, ymin, xmax, ymax)#(left, upper, right, lower)
-                cropImg = img.crop(cropArea)
                 try:
-                    
                     print(".", end="", flush=True)
+                    cropImg = img.crop(cropArea)
                     cropImg.save(classDir + ids[i].split('.')[0] + '_' + str(j) + '.jpg')
                     #cv2.imwrite(classDir + ids[i].split('.')[0] + '_' + str(j) + '.jpg', cropImg)
                 except:

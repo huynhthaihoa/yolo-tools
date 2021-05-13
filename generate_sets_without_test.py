@@ -6,7 +6,7 @@ data = list()
 exts = ['.jpg', '.png', '.jfif', '.jpeg']
 extLen = len(exts)
 impaths = glob('img\\*.txt')
-log = open("log_generate.txt", "rt")
+log = open("log_generate.txt", "wt")
 lines = list()
 for line in log:
     lines.append(os.path.basename(line).split('.')[0])

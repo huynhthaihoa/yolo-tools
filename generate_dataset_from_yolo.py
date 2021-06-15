@@ -33,16 +33,19 @@ def unconvert(width, height, x, y, w, h):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-i", "--img", help="Directory of input images",
-                    type=str, default="coco/images")
+                    type=str, default="")
     parser.add_argument("-a", "--ann", help="Directory of YOLO annotation files (.txt)",
-                    type=str, default="coco/yolo")
+                    type=str, default="")
     parser.add_argument("-c", "--class_file", help="Class name file (.txt)",
                     type=str, default="obj.names")
     parser.add_argument("-o", "--output", help="Output directory to contain dataset",
                     type=str, default="Labels/")
     args = parser.parse_args()
     imgDir = args.img
-    annDir = args.ann + '/'
+    if args.ann == "":
+        annDir = args.img + '/'
+    else:
+        annDir = args.ann + '/'
     out = args.output
     if os.path.isdir(out) is False:
         os.mkdir(out)
@@ -61,8 +64,10 @@ if __name__ == "__main__":
     ids = [os.path.basename(x) for x in imgs]
     log = open("log_generate.txt", "wt")
     for i, imgpath in enumerate(imgs):
+        basename = ids[i][: ids[i].rfind('.')]
         #print(imgpath)
-        annpath = annDir + ids[i][: ids[i].rfind('.')] + '.txt'
+        annpath = annDir + basename + '.txt'
+        #annpath = annDir + ids[i][: ids[i].rfind('.')] + '.txt'
         #annpath = annDir + ids[i].split('.')[0] + '.txt'
         #print(annpath)
         if os.path.isfile(annpath) is True:
@@ -92,7 +97,8 @@ if __name__ == "__main__":
                 try:
                     print(".", end="", flush=True)
                     cropImg = img.crop(cropArea)
-                    cropImg.save(classDir + ids[i].split('.')[0] + '_' + str(j) + '.jpg')
+                    #print(ids[i])
+                    cropImg.save(classDir + basename + '_' + str(j) + '.jpg')
                     #cv2.imwrite(classDir + ids[i].split('.')[0] + '_' + str(j) + '.jpg', cropImg)
                 except:
                     log.write(imgpath + '\n')

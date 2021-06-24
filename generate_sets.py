@@ -7,7 +7,8 @@ exts = ['.jpg', '.png', '.jfif', '.jpeg']
 extLen = len(exts)
 impaths = glob('img\\*.txt')
 for impath in impaths:
-    basename = os.path.basename(impath).split('.')[0]
+    basename = os.path.basename(impath)
+    basename = basename[:basename.rfind('.')]
     for ext in exts:
         fileName = 'img/' + basename + ext
         if os.path.exists(fileName):

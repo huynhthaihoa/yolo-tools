@@ -35,22 +35,33 @@ if __name__ == "__main__":
     for line in classFile:
         if line[-1] == '\n':
             classes.append(line[:-1])
+            #print(line[:-1] + ":" + str(len(line[:-1])))
         else:
             classes.append(line)
+            #print(line + ":" + str(len(line)))
     subdirs = [x[0] for x in os.walk(args.input)]
     for subdir in subdirs:
+        if subdir == args.input:
+            continue
+        #print("Oops:", classes.index(os.path.basename(subdir)))
         try:
             cls_id = classes.index(os.path.basename(subdir))
+            #print('in!')
+            #print(os.path.basename(subdir) + ":" + cls_id)
         except:
             cls_id = -1
+            #print('not in!')
+            #print(cls_id)
             #continue
         imgs = []
         for ext in exts:
             imgs += glob(subdir + ext)
             for imgpath in imgs:
                 basename = os.path.basename(imgpath)
+                #print(basename)
                 annname = basename[:basename.rfind('_')]
                 annpath = anns + annname + '.txt'
+                #print(annpath)
                 order = int(basename[basename.rfind('_') + 1: basename.rfind('.')])
                 if os.path.isfile(annpath) is True:
                     if annpath not in data:

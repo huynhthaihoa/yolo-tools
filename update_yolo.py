@@ -12,7 +12,7 @@ import argparse
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-i", "--input", help="Directory contains label dataset",
+    parser.add_argument("-l", "--input", help="Directory contains label dataset",
                     type=str, default="Labels")
     parser.add_argument("-a", "--ann", help="Directory contains YOLO annotation files",
                     type=str, default="coco/yolo")
@@ -75,6 +75,7 @@ if __name__ == "__main__":
                         if i == order:
                             print(".", end="", flush=True)
                             if(int(data[annpath][i][0]) != cls_id):
+                                print("*", end="", flush=True)
                                 #print(str(data[annpath][i][0]) + ':' +str(cls_id))
                                 #print(".", end="", flush=True)
                                 data[annpath][i][0] = cls_id

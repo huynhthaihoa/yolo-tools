@@ -38,7 +38,7 @@ if __name__ == "__main__":
                     type=str, default="")
     parser.add_argument("-c", "--class_file", help="Class name file (.txt)",
                     type=str, default="obj.names")
-    parser.add_argument("-o", "--output", help="Output directory to contain dataset",
+    parser.add_argument("-l", "--output", help="Output directory to contain dataset",
                     type=str, default="Labels/")
     args = parser.parse_args()
     imgDir = args.img

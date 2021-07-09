@@ -27,12 +27,15 @@ if __name__ == "__main__":
         annname = basename[: basename.rfind('.')] + '.txt'
         inputanname = input + '/' + annname
         if os.path.exists(inputanname) is False or (os.path.exists(inputanname) is True and os.stat(inputanname).st_size == 0):         
-            outputannname = output + annname
+            #outputannname = output + annname
             outputimagename = output + basename
             os.rename(img, outputimagename)
             if os.path.exists(inputanname) is True:
                 print('Found empty file:', inputanname)
-                os.rename(inputanname, outputannname)
+                os.remove(inputanname)
+                #os.rename(inputanname, outputannname)
             else:
                 print('Annotation file does not exist: ', inputanname)
+        else:
+            print(".", end="", flush=True)
     print('Move files finished!')

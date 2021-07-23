@@ -75,6 +75,7 @@ def update(width, height, size, x, y, w, h):
     
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    parser.add_argument("-p", "--prefix", help="Camera prefix", type=str, default="")
     parser.add_argument("-i", "--img", help="Directory of input images",
                     type=str, default="img")
     parser.add_argument("-a", "--ann", help="Directory of original YOLO annotation files (.txt)",
@@ -85,9 +86,11 @@ if __name__ == "__main__":
                     type=str, default="obj.names")
     parser.add_argument("-l", "--output", help="Output directory to contain dataset",
                     type=str, default="Labels/")
+                 
     args = parser.parse_args()
     size = args.size
     imgDir = args.img
+    prefix = args.prefix
     if args.ann == "":
         annDir = args.img + '/'
     else:
@@ -144,7 +147,7 @@ if __name__ == "__main__":
                     print(".", end="", flush=True)
                     cropImg = img.crop(cropArea)
                     #print(ids[i])
-                    cropImg.save(classDir + basename + '_' + str(j) + '.png')
+                    cropImg.save(classDir + prefix + '_' + basename + '_' + str(j) + '.png')
                     #cv2.imwrite(classDir + ids[i].split('.')[0] + '_' + str(j) + '.jpg', cropImg)
                 except:
                     log.write(imgpath + '\n')

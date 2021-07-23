@@ -155,14 +155,14 @@ if __name__ == "__main__":
         updateAnnFile = open(targetName + ".txt", "wt")
         cropImgName = targetName + ".png"
         idx = 0
-        id_stop = basename.find('-')
-        if(id_stop != -1):
-            basename = basename[: id_stop]
-        # try:
-        #     #idx = int(basename[basename.rfind('_') + 1: basename.rfind('.')])
-        #     basename = basename[: basename.find('-')]
-        # except:
-        #     pass
+        # id_stop = basename.rfind('_')
+        # if(id_stop != -1):
+            # basename = basename[: id_stop]
+        try:
+            idx = int(basename[basename.rfind('_') + 1: ])
+            basename = basename[: basename.rfind('_')]
+        except:
+            pass
         
         detAnnName = imgDir + basename + ".txt"
         if os.path.isfile(detAnnName) is True and os.stat(detAnnName).st_size > 0:

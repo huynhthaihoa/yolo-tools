@@ -33,7 +33,7 @@ def unconvert(width, height, x, y, w, h):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-i", "--img", help="Directory of input images",
-                    type=str, default="")
+                    type=str, default="img")
     parser.add_argument("-a", "--ann", help="Directory of YOLO annotation files (.txt)",
                     type=str, default="")
     parser.add_argument("-c", "--class_file", help="Class name file (.txt)",

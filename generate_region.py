@@ -147,7 +147,11 @@ if __name__ == "__main__":
                     print(".", end="", flush=True)
                     cropImg = img.crop(cropArea)
                     #print(ids[i])
-                    cropImg.save(classDir + prefix + '_' + basename + '_' + str(j) + '.png')
+                    if prefix != "":
+                        cropImg.save(classDir + prefix + '_' + basename + '_' + str(j) + '.png')
+                    else:
+                    #    prefix += '_'
+                        cropImg.save(classDir + basename + '_' + str(j) + '.png')
                     #cv2.imwrite(classDir + ids[i].split('.')[0] + '_' + str(j) + '.jpg', cropImg)
                 except:
                     log.write(imgpath + '\n')

@@ -128,8 +128,12 @@ if __name__ == "__main__":
                 annData = np.loadtxt(ann).reshape(-1, 5)#oldAnnFile.readlines()
                 if idY != -1:
                     anchorY = annData[idY]
+                    #log.write("anchorY: {0} {1} {2}\n".format(anchorY[2], anchorY[4], difY))       
+
                 if idX != -1:
                     anchorX = annData[idX]#[11]#annData[11]
+                    #log.write("anchorX: {0} {1} {2}\n".format(anchorX[1], anchorX[3], difX))
+
                 difX = 0
                 offsetX_anno = 0
                 if idX != -1:
@@ -141,31 +145,49 @@ if __name__ == "__main__":
                     difY = 1 - (anchorY[2] - (anchorY[4] / 2.0))
                     offsetY_anno = size - int(size_old * (anchorY[2] - (anchorY[4] / 2.0)))
 
-                log.write("anchorX: {0} {1} {2}\n".format(anchorX[1], anchorX[3], difX))
-                log.write("anchorY: {0} {1} {2}\n".format(anchorY[2], anchorY[4], difY))       
                 offsetX = int(size_old * difX)# - 1
                 offsetY = int(size_old * difY)# + 1
-                log.write("offsetX: {0}\n".format(offsetX))
-                log.write("offsetY: {0}\n".format(offsetY))
-                for i in range(4):
+                n_objects = len(annData)
+                #log.write("offsetX: {0}\n".format(offsetX))
+                #log.write("offsetY: {0}\n".format(offsetY))
+                for i in range(n_objects):
                     data_conv = annData[i]
+                    data_new = list()
+                    # if data_conv[0] < 10 or data_conv[0] == 16:
+                        # continue
                     for j in range(5):
                         if j == 0:
-                            updateAnnFile.write(str(int(data_conv[j])))
+                            data_new.append(int(data_conv[j]))
+                            #updateAnnFile.write(str(int(data_conv[j])))
                         elif j == 1:
                             x_new = (size_old * data_conv[j] + offsetX_anno) / size
-                            updateAnnFile.write(str(x_new))
+                            if x_new >= 1:
+                                break
+                            data_new.append(x_new)
+                            #updateAnnFile.write(str(x_new))
                         elif j == 2:
                             y_new = (size_old * data_conv[j] + offsetY_anno) / size
-                            updateAnnFile.write(str(y_new))
+                            if y_new >= 1:
+                                break
+                            data_new.append(y_new)
+                            #updateAnnFile.write(str(y_new))
                         else:
-                            w_new = (data_conv[j] * size_old) / size
-                            updateAnnFile.write(str(w_new))
+                            s_new = (data_conv[j] * size_old) / size
+                            data_new.append(s_new)
+                            #updateAnnFile.write(str(w_new))
+                        # if j < 4:
+                            # updateAnnFile.write(' ')
+                        # else:
+                            # updateAnnFile.write('\n') 
+                    if len(data_new) < 5:
+                        continue 
+                    for j in range(5):
+                        updateAnnFile.write(str(data_new[j]))
                         if j < 4:
                             updateAnnFile.write(' ')
                         else:
-                            updateAnnFile.write('\n')   
-
+                            updateAnnFile.write('\n')  
+                                
                 xR_max_new = xR_max_old - offsetX
                 xR_min_new = xR_max_new - size
                 yR_max_new = yR_max_old - offsetY
@@ -174,7 +196,7 @@ if __name__ == "__main__":
                 cropImg = img.crop(cropArea)
                 cropImg.save(updateImgName)
                 print(".", end="", flush=True)
-                log.write("Range old: {0} {1} - {2} {3}\n".format(xR_min_old, xR_max_old, yR_min_old, yR_max_old))
-                log.write("Range new: {0} {1} - {2} {3}\n".format(xR_min_new, xR_max_new, yR_min_new, yR_max_new))
+                #log.write("Range old: {0} {1} - {2} {3}\n".format(xR_min_old, xR_max_old, yR_min_old, yR_max_old))
+                #log.write("Range new: {0} {1} - {2} {3}\n".format(xR_min_new, xR_max_new, yR_min_new, yR_max_new))
     print('Relocating cropped region finished!')
     log.close()

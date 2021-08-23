@@ -46,11 +46,11 @@ random.shuffle(data)
 for i in range(num):
     basename = data[i][0]
     imgpath = data[i][1]
-    annpath = data[i][2]
+    #annpath = data[i][2]
     imgpath_new = outDir + basename
-    annpath_new = outDir + basename[: basename.rfind('.')] + '.txt'
+    #annpath_new = outDir + basename[: basename.rfind('.')] + '.txt'
     copyfile(imgpath, imgpath_new)
-    copyfile(annpath, annpath_new)
+    #copyfile(annpath, annpath_new)
     print(".", end="", flush=True)
 
 print("Picking completed!")

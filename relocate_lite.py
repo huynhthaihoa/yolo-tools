@@ -66,9 +66,9 @@ def update_ROI(width, height, size, xmin, xmax, ymin, ymax):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-o", "--old", help="Directory of old cropped images & annotation files",
+    parser.add_argument("-i", "--input", help="Directory of old cropped images & annotation files",
                     type=str, default="ann")
-    parser.add_argument("-n", "--new", help="Directory of updated cropped images & annotation files",
+    parser.add_argument("-o", "--output", help="Directory of updated cropped images & annotation files",
                     type=str, default="ann_2")
     parser.add_argument("-s", "--size", help="Cropped image size",
                     type=int, default=608)
@@ -77,8 +77,8 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     size = args.size
-    oldDir = args.old + '/'
-    newDir = args.new 
+    oldDir = args.input + '/'
+    newDir = args.output 
     anns = glob(oldDir + '*.txt')
     if os.path.isdir(newDir) is False:
         os.mkdir(newDir)
@@ -107,7 +107,7 @@ if __name__ == "__main__":
                     xMax = xmax
                 if ymax > yMax:
                     yMax = ymax
-            print(xMax, yMax)
+            #print(xMax, yMax)
 
             offsetX_anno = size - xMax - 5
             offsetY_anno = size - yMax - 5
@@ -141,5 +141,5 @@ if __name__ == "__main__":
             cropArea = (xMin_R, yMin_R, xMax_R, yMax_R)
             cropImg = img.crop(cropArea)
             cropImg.save(updateImgName)
-            #print(".", end="", flush=True)
+            print(".", end="", flush=True)
     print('Relocating cropped region finished!')

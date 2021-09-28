@@ -65,9 +65,10 @@ if __name__ == "__main__":
         nDigits = countDigit(nFrames)
         print("# of digits:", nDigits)
         name = os.path.basename(inputPath).split('.')[0]
-        subFoldName = out + name + '/'
+        subFoldName = out + name
         if os.path.isdir(subFoldName) is False:
             os.mkdir(subFoldName)
+        subFoldName += '/'
         #print(name)
         i = 0
         while True:

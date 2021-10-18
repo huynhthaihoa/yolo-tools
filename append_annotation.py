@@ -2,7 +2,7 @@ import os
 import sys
 #import numpy as np
 from glob import glob
-from shutil import copyfile
+#from shutil import copyfile
 
 #imgs = glob('*.png') + glob('*.jpg') + glob('*.jpeg')
 origin = os.path.abspath(sys.argv[1])

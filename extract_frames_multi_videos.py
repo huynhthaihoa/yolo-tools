@@ -4,6 +4,10 @@ import os
 from glob import glob
 
 def getFrameNum(videoname):
+    '''
+    get the number of frames in video:
+    @nvideoname [in]: path of video
+    '''
     source = cv2.VideoCapture(videoname)
     count = 0
     while True:
@@ -14,6 +18,10 @@ def getFrameNum(videoname):
     return count
 
 def countDigit(nFrames):
+    '''
+    count the number of digits of a specified number:
+    @nFrames [in]: a number to be determined
+    '''
     count = 0
     while(nFrames > 0):
         count += 1
@@ -21,6 +29,11 @@ def countDigit(nFrames):
     return count
 
 def getSuffix(nDigits, index):
+    '''
+    generate image file name suffix:
+    @nDigits [in]: # of digit to represent all the frames,
+    @index [in]: index of the selected image
+    '''
     testNum = 10
     count = 1
     while(testNum <= index):
@@ -44,10 +57,13 @@ if __name__ == "__main__":
                     type=int, default=0)
     parser.add_argument("-f", "--frequency", help="Frequency (distance between 2 adjacent saved frames - default is 1)", 
                     type=int, default=1)
+    parser.add_argument("-p", "--prefix", help="Image prefix (prefix of extracted image name, default is video name)", 
+                    type=str, default="")
     args = parser.parse_args()
     out = args.output
     entryIdx = args.entry
     freq = args.frequency
+    prefix = args.prefix
     if os.path.isdir(out) is False:
         os.mkdir(out)
     out += '/'
@@ -69,6 +85,8 @@ if __name__ == "__main__":
         if os.path.isdir(subFoldName) is False:
             os.mkdir(subFoldName)
         subFoldName += '/'
+        if prefix != "":
+            name = prefix
         #print(name)
         i = 0
         while True:

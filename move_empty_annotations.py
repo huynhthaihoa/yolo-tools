@@ -26,7 +26,7 @@ if __name__ == "__main__":
         basename = os.path.basename(img)
         annname = basename[: basename.rfind('.')] + '.txt'
         inputanname = input + '/' + annname
-        if os.path.exists(inputanname) is False or (os.path.exists(inputanname) is True and os.stat(inputanname).st_size == 0):         
+        if os.path.exists(inputanname) is False or os.stat(inputanname).st_size == 0:         
             #outputannname = output + annname
             outputimagename = output + basename
             os.rename(img, outputimagename)

@@ -1,60 +1,24 @@
-# Convert-YOLO-to-PascalVOC
+# YOLO Tools
 
-Last Page Update: **20/07/2020**
+Last update: **30/11/2021**
 
-A python script to convert YOLO into Pascal VOC 2012 format. It generates xml annotation file in PASCAL VOC format for Object Detection.
+## Introduction
+Some scripts I've made for preprocessing the data when I worked on a project about object detection using YOLO model. The repository is originally forked from [carolinepacheco/convert-yolo-to-pascalvoc](https://github.com/carolinepacheco/convert-yolo-to-pascalvoc) when I was finding a script to help convert the annotation file from YOLO format to Pascal VOC and otherwise, with the final target is to try several models on the same training data without relabeling. During the time working on the project, I've made some more scripts that help me preprocess the data and therefore I expanded the repository to manage them.
 
-<p align="center"><img src="https://raw.githubusercontent.com/carolinepacheco/Convert-COCO-to-PascalVOC/master/docs/convert.png" border="0" /></p>
+## Notes (to be updated)
+ 
+...
+ 
+##  Prerequisites (to be updated)
 
-
-## Notes
- 
- * Make sure you have the dependencies listed on yolo_to_voc.py. 
- 
- * Update root path (where this script lies) in line 46. ``ROOT = 'coco'``. 
- 
- * Let's say that you have a custom dataset, which is not included in COCO. eg ship. Add its name to ``YOLO_CLASSES=()``, in the first position.
- 
- * Remove images that are already in /coco/images, /coco/labels and /coco/outputs.
- 
- * Put all your images at /coco/images folder.
- 
- * Put corresponding annotations (.txt files) to /coco/labels
- 
- 
-##  Prerequisites (my environment)
-
-* Python 3.8.3
+* Python 3.7 (at least)
 
 * Numpy
 
-* Opencv 
+* Pillow
 
  
- ## Usage
- 
- Please to run this script use the command below :
- 
-```
-python3 yolo_to_voc.py
-```
- 
- or 
- 
-```
-python yolo_to_voc.py
+ ## Usage (to be updated)
+... 
 
-```
-
-Some academic projects
--------------------------
-```
-https://www.behance.net/carolinepacheco
-```
-
-Medium blog site
--------------------------
-```
-https://medium.com/@lolyne.pacheco
-```
 

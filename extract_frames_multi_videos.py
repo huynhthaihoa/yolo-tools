@@ -55,14 +55,14 @@ if __name__ == "__main__":
                     type=str, default="output")
     parser.add_argument("-e", "--entry", help="The first index of the image (default is 0)", 
                     type=int, default=0)
-    parser.add_argument("-f", "--frequency", help="Frequency (distance between 2 adjacent saved frames - default is 1)", 
+    parser.add_argument("-s", "--step", help="Distance between 2 adjacent saved frames (default is 1)", 
                     type=int, default=1)
     parser.add_argument("-p", "--prefix", help="Image prefix (prefix of extracted image name, default is video name)", 
-                    type=str, default="")
+                    type=str, default="")pi
     args = parser.parse_args()
     out = args.output
     entryIdx = args.entry
-    freq = args.frequency
+    freq = args.step
     prefix = args.prefix
     if os.path.isdir(out) is False:
         os.mkdir(out)

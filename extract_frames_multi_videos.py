@@ -58,7 +58,7 @@ if __name__ == "__main__":
     parser.add_argument("-s", "--step", help="Distance between 2 adjacent saved frames (default is 1)", 
                     type=int, default=1)
     parser.add_argument("-p", "--prefix", help="Image prefix (prefix of extracted image name, default is video name)", 
-                    type=str, default="")pi
+                    type=str, default="")
     args = parser.parse_args()
     out = args.output
     entryIdx = args.entry

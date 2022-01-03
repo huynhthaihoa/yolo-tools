@@ -10,6 +10,8 @@ if __name__ == "__main__":
                     type=str, default="input")
     parser.add_argument("-o", "--output", help="Directory contains output folder",
                     type=str, default="output")
+    parser.add_argument("-r", "--remove", help="Remove empty file ? (default is true)",
+                    type=bool, default=True)
                     
     args = parser.parse_args()
     input = args.input + '/'
@@ -27,13 +29,15 @@ if __name__ == "__main__":
         annname = basename[: basename.rfind('.')] + '.txt'
         inputanname = input + '/' + annname
         if os.path.exists(inputanname) is False or os.stat(inputanname).st_size == 0:         
-            #outputannname = output + annname
             outputimagename = output + basename
             os.rename(img, outputimagename)
             if os.path.exists(inputanname) is True:
                 print('Found empty file:', inputanname)
-                os.remove(inputanname)
-                #os.rename(inputanname, outputannname)
+                if args.remove == True:
+                    os.remove(inputanname)
+                else:
+                    outputannname = output + annname
+                    os.rename(inputanname, outputannname)
             else:
                 print('Annotation file does not exist: ', inputanname)
         else:

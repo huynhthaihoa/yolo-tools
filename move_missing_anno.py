@@ -9,7 +9,9 @@ if __name__ == "__main__":
                     type=str, default="img")
     parser.add_argument("-o", "--output", help="Directory of output folder",
                     type=str, default="out")
-    
+    parser.add_argument("-n", "--number", help="Minimum number of bounding boxes in one image",
+                    type=int, default=1)
+
     args = parser.parse_args()
     inpDir = args.input + '/'
     outDir = args.output + '/'
@@ -27,7 +29,7 @@ if __name__ == "__main__":
         newimg = outDir + name + ".png"
         if os.path.exists(img) is True:
             count = len(np.loadtxt(ann).reshape(-1, 5))
-            if count < 8:
+            if count < args.number:
                 os.rename(ann, newann)
                 os.rename(img, newimg)
             print(".", end="", flush=True)

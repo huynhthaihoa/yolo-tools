@@ -47,7 +47,10 @@ if __name__ == "__main__":
 
             data = np.loadtxt(ann).reshape(-1, 5)
             for line in data:
-                count[int(line[0])] = int(count[int(line[0])]) + 1
+                try:
+                    count[int(line[0])] = int(count[int(line[0])]) + 1
+                except:
+                    pass
 
             for _class in count:
                 n = count[_class]

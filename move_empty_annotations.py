@@ -1,7 +1,7 @@
 
 import os
 from glob import glob
-#import cv2
+from distutils.util import strtobool
 import argparse
 
 if __name__ == "__main__":
@@ -11,7 +11,7 @@ if __name__ == "__main__":
     parser.add_argument("-o", "--output", help="Directory contains output folder",
                     type=str, default="output")
     parser.add_argument("-r", "--remove", help="Remove empty file ? (default is true)",
-                    type=bool, default=True)
+                    type=lambda x: bool(strtobool(x)), default="True")
                     
     args = parser.parse_args()
     input = args.input + '/'

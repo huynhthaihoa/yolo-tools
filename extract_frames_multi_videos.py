@@ -2,6 +2,7 @@ import cv2
 import argparse
 import os 
 from glob import glob
+from distutils.util import strtobool
 
 def getFrameNum(videoname):
     '''
@@ -59,6 +60,8 @@ if __name__ == "__main__":
                     type=int, default=1)
     parser.add_argument("-p", "--prefix", help="Image prefix (prefix of extracted image name, default is video name)", 
                     type=str, default="")
+    parser.add_argument("-d", "--divide", help="Divide into subfolder corresponding to each video (default is True)",
+                                            type=lambda x: bool(strtobool(x)), default="True")
     args = parser.parse_args()
     out = args.output
     entryIdx = args.entry
@@ -75,16 +78,19 @@ if __name__ == "__main__":
     inputPaths = glob(inp + '*.mp4') + glob(inp + '*.h264')
 
     for inputPath in inputPaths:
+        print(inputPath)
         source = cv2.VideoCapture(inputPath)
         nFrames = getFrameNum(inputPath)
         print("Frames:", nFrames)
         nDigits = countDigit(nFrames)
         print("# of digits:", nDigits)
         name = os.path.basename(inputPath).split('.')[0]
-        subFoldName = out + name
-        if os.path.isdir(subFoldName) is False:
-            os.mkdir(subFoldName)
-        subFoldName += '/'
+        subFoldName = out
+        if args.divide == True:
+            subFoldName = out + name
+            if os.path.isdir(subFoldName) is False:
+                os.mkdir(subFoldName)
+            subFoldName += '/'
         if prefix != "":
             name = prefix
         #print(name)

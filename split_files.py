@@ -32,7 +32,7 @@ if __name__ == "__main__":
         os.rename(img, dstname)
         print(".", end="", flush=True)
         i += 1
-        if i == sample_sizes:
+        if i == sample_sizes and seed < n - 1:
             i = 0
             seed += 1
     print('Divide finished!')

@@ -18,7 +18,7 @@ if __name__ == "__main__":
     for ann in anns:
         basename = os.path.basename(ann)
         basename_without_ext = basename[: basename.rfind('.')]
-        imgname_base = basename_without_ext + '.jpg'
+        imgname_base = basename_without_ext + '.png'
         imgname = updDir + imgname_base
         annname_ref = refDir + basename
         if os.path.exists(annname_ref) is True and os.path.exists(imgname) is True:

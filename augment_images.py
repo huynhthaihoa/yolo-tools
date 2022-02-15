@@ -94,6 +94,8 @@ if __name__ == "__main__":
                 # seed_transpose = random.randint(0, 2)
                 seed_safecrop = random.randint(0, 2)
                 seed_perspective = random.randint(0, 2)
+                seed_flip = random.randint(0, 2)
+                seed_rgb = random.randint(0, 2)
                 # if seed_weather == 0:
                 #     transform_list.append(A.RandomSnow(p=0.5))
                 # else:
@@ -107,8 +109,12 @@ if __name__ == "__main__":
                 #     transform_list.append(A.Transpose(p=0.5))
                 if seed_safecrop == 1:
                     transform_list.append(A.RandomSizedBBoxSafeCrop(height, width))
-                if seed_perspective:
+                if seed_perspective == 1:
                     transform_list.append(A.Perspective())
+                if seed_flip == 1:
+                    transform_list.append(A.HorizontalFlip(p=0.5))
+                if seed_rgb == 1:
+                    transform_list.append(A.RGBShift(r_shift_limit=30, g_shift_limit=30, b_shift_limit=30, p=0.5))
                 transform = A.Compose(transforms=transform_list, bbox_params=A.BboxParams(format="yolo"))
                 res = transform(image=image, bboxes=bboxes)
                 outputimgpath = outputImgs + originname + '-' + getSuffix(nDigits, i) + '.png'

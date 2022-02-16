@@ -75,7 +75,7 @@ if __name__ == "__main__":
     if inp != "":
         inp += '/'
 
-    inputPaths = glob(inp + '*.mp4') + glob(inp + '*.h264')
+    inputPaths = glob(inp + '*.mp4') + glob(inp + '*.h264') + glob(inp + '*.avi')
 
     for inputPath in inputPaths:
         print(inputPath)

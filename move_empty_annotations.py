@@ -10,7 +10,7 @@ if __name__ == "__main__":
                     type=str, default="input")
     parser.add_argument("-o", "--output", help="Directory contains output folder",
                     type=str, default="output")
-    parser.add_argument("-r", "--remove", help="Remove empty file ? (default is true)",
+    parser.add_argument("-r", "--remove", help="Remove empty annotation file ? (default is true)",
                     type=lambda x: bool(strtobool(x)), default="True")
                     
     args = parser.parse_args()

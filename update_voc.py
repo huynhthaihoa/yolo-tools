@@ -31,13 +31,16 @@ if __name__ == "__main__":
         if os.path.isdir(new) is False:
             os.mkdir(new)
         new += '/'
-    classFile = open(args.class_file, "rt")
+
     classes = list()
-    for line in classFile:
-        if line[-1] == '\n':
-            classes.append(line[:-1])
-        else:
-            classes.append(line)
+    with open(args.class_file, "rt") as classFile:
+        for line in classFile:
+            if line[-1] == '\n':
+                classes.append(line[:-1])
+            #print(line[:-1] + ":" + str(len(line[:-1])))
+            else:
+                classes.append(line)
+
     exts = ['/*.jpg', '/*.png', '/*.jpeg', '/*.jfif']
     subdirs = [x[0] for x in os.walk(args.input)]
     for subdir in subdirs:

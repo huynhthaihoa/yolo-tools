@@ -50,13 +50,16 @@ if __name__ == "__main__":
     if os.path.isdir(out) is False:
         os.mkdir(out)
     out += '/'
-    classFile = open(args.class_file, "rt")
-    classes = []
-    for line in classFile:
-        if line[-1] == '\n':
-            classes.append(line[:-1])
-        else:
-            classes.append(line)
+    
+    classes = list()
+    with open(args.class_file, "rt") as classFile:
+        for line in classFile:
+            if line[-1] == '\n':
+                classes.append(line[:-1])
+            #print(line[:-1] + ":" + str(len(line[:-1])))
+            else:
+                classes.append(line)
+                
     exts = ['/*.jpg', '/*.png', '/*.jpeg', '/*.jfif']
     imgs = []
     for ext in exts:

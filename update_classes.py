@@ -69,7 +69,7 @@ if __name__ == "__main__":
                 oldIdx = oldClasses.index(line)
                 print("{0} {1}\n".format(oldIdx, newIdx))
                 updateIndices[oldIdx] = newIdx
-                newIdx += 1
+            newIdx += 1
     
     oldAnns = glob(args.ann + "/*.txt")
     for oldAnn in oldAnns:

@@ -48,6 +48,13 @@ def getSuffix(nDigits, index):
     suffix += str(index)
     return suffix
 
+def getTimeStamp(index, fps):
+    millisecond = int(index * (1000 / fps))
+    second, millisecond = divmod(millisecond, 1000)
+    minute, second = divmod(second, 60)
+    hour, minute = divmod(minute, 60)
+    return "{0:02d}h{1:02d}m{2:02d}s{3:03d}ms".format(hour, minute, second, millisecond)
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-i", "--input", help="Path to the input folder",
@@ -80,6 +87,8 @@ if __name__ == "__main__":
     for inputPath in inputPaths:
         print(inputPath)
         source = cv2.VideoCapture(inputPath)
+        fps = source.get(cv2.CAP_PROP_FPS)
+        print(fps)
         nFrames = getFrameNum(inputPath)
         print("Frames:", nFrames)
         nDigits = countDigit(nFrames)
@@ -101,7 +110,7 @@ if __name__ == "__main__":
                 print("Can't receive frame (stream end?). Exiting ...")
                 break
             if(i % freq == 0):
-                framename = subFoldName + name + '_' + getSuffix(nDigits, i + entryIdx) + '.png'
+                framename = subFoldName + name + '_' + getTimeStamp(i, fps) + '.jpg' # getSuffix(nDigits, i + entryIdx) + '.png'
             #print(framename)
                 cv2.imwrite(framename, frame)
                 print(".", end="", flush=True)

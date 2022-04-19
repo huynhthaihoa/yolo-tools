@@ -49,6 +49,11 @@ def getSuffix(nDigits, index):
     return suffix
 
 def getTimeStamp(index, fps):
+    '''
+    get time stamp of the frame:
+    @index [in]: frame index,
+    @fps [in]: camera frame per second
+    '''
     millisecond = int(index * (1000 / fps))
     second, millisecond = divmod(millisecond, 1000)
     minute, second = divmod(second, 60)

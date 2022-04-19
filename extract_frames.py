@@ -46,6 +46,18 @@ def getSuffix(nDigits, index):
     suffix += str(index)
     return suffix
 
+def getTimeStamp(index, fps):
+    '''
+    get time stamp of the frame:
+    @index [in]: frame index,
+    @fps [in]: camera frame per second
+    '''
+    millisecond = int(index * (1000 / fps))
+    second, millisecond = divmod(millisecond, 1000)
+    minute, second = divmod(second, 60)
+    hour, minute = divmod(minute, 60)
+    return "{0:02d}h{1:02d}m{2:02d}s{3:03d}ms".format(hour, minute, second, millisecond)
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
@@ -82,7 +94,7 @@ if __name__ == "__main__":
         if not ret:
             print("Can't receive frame (stream end?). Exiting ...")
             break
-        framename = out + name + '_' + getSuffix(nDigits, i) + '.png'
+        framename = out + name + '_' + getTimeStamp(i, fps) + '.jpg' # getSuffix(nDigits, i + entryIdx) + '.png'
         cv2.imwrite(framename, frame)
         print(".", end="", flush=True)
         i += 1

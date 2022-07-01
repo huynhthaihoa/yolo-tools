@@ -74,6 +74,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     inputPath = args.input
     source = cv2.VideoCapture(inputPath)
+    fps = source.get(cv2.CAP_PROP_FPS)
     nFrames = getFrameNum(inputPath)
     print("Frames:", nFrames)
     nDigits = countDigit(nFrames)

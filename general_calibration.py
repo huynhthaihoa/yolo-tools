@@ -45,9 +45,9 @@ if __name__ == "__main__":
         name = os.path.basename(fname)
         img = cv2.imread(fname)
         if _img_shape == None:
-            _img_shape = img.shape[:2]
+            _img_shape = img.shape[:2][::-1]
         else:
-            assert _img_shape == img.shape[:2], "All images must share the same size."
+            assert _img_shape == img.shape[:2][::-1], "All images must share the same size."
         gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
         # Find the chess board corners
         ret, corners = cv2.findChessboardCorners(gray, CHECKERBOARD, checkboard_corner_flags)
@@ -71,7 +71,7 @@ if __name__ == "__main__":
     rms, K, D, rvecs, tvecs = cv2.calibrateCamera(
         objpoints,
         imgpoints,
-        _img_shape[::-1],
+        _img_shape,
         None, 
         None
         # K,
@@ -83,13 +83,13 @@ if __name__ == "__main__":
     )
     
     print("Found " + str(N_OK) + " valid images for calibration")
-    print("DIM=" + str(_img_shape[::-1]))
+    print("DIM=" + str(_img_shape))
     print("K=np.asarray(" + str(K.tolist()) + ")")
     print("D=np.array(" + str(D.tolist()) + ")")
     print("rvecs={}\n".format(rvecs))
     print("tvecs={}\n".format(tvecs))
     with open(OUTPUT_FILE, "wb") as f:
-        data = [_img_shape[::-1], rms, K, D, rvecs, tvecs]
+        data = [_img_shape, rms, K, D, rvecs, tvecs]
         pickle.dump(data, f)
     # file = open(OUTPUT_FILE, "w+")
     # file.write("Found " + str(N_OK) + " valid images for calibration\n")

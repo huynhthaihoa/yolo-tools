@@ -55,7 +55,8 @@ if __name__ == "__main__":
         if ret == True:
             #print("OK!")
             objpoints.append(objp)
-            cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), subpix_criteria)
+            #Refine the corner locations
+            corners = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), subpix_criteria)
             imgpoints.append(corners)
             val = cv2.drawChessboardCorners(img, CHECKERBOARD, corners, ret)
             cv2.imwrite(os.path.join(VAL_DIR, name), val)

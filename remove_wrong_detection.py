@@ -23,7 +23,8 @@ if __name__ == "__main__":
         bname = os.path.basename(fname)
         if bname not in rbnames:
             print(bname)
-            os.rename(fname, os.path.join(args.output, bname))
+            os.remove(fname)
+            #os.rename(fname, os.path.join(args.output, bname))
     print("Finish!")
     
     

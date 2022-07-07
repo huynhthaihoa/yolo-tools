@@ -3,6 +3,7 @@ import numpy as np
 import os
 import glob
 import argparse
+import json
 import pickle
 
 calibration_flags = cv2.fisheye.CALIB_RECOMPUTE_EXTRINSIC+cv2.fisheye.CALIB_FIX_SKEW#+cv2.fisheye.CALIB_CHECK_COND
@@ -17,8 +18,8 @@ if __name__ == "__main__":
     parser.add_argument("-c", "--checkerboard", help="Path to the checkboard shape (default is 7,10)", type=lambda s: [int(item) for item in s.split(',')], default = [7, 10])
     parser.add_argument("-v", "--validation", help="Path to the output validation folder", type=str, default="val")
     parser.add_argument("-e", "--error", help="Path to the error folder", type=str, default="err")
-    parser.add_argument("-o", "--output", help="Path to the output calibration file",
-                    type=str, default="calibration.dat")
+    parser.add_argument("-o", "--output", help="Path to the output calibration file (json/dat)",
+                    type=str, default="calibration.json")
     
     args = parser.parse_args()
     
@@ -39,8 +40,8 @@ if __name__ == "__main__":
     objpoints = [] # 3d point in real world space
     imgpoints = []
     
-    images = glob.glob(INPUT_DIR + '\*.jpg')
-    for fname in images:
+    fnames = glob.glob(INPUT_DIR + '\*.jpg')
+    for fname in fnames:
         print(fname)
         name = os.path.basename(fname)
         img = cv2.imread(fname)
@@ -53,7 +54,7 @@ if __name__ == "__main__":
         ret, corners = cv2.findChessboardCorners(gray, CHECKERBOARD, checkboard_corner_flags)
         # If found, add object points, image points (after refining them)
         if ret == True:
-            #print("OK!")
+            print("OK!")
             objpoints.append(objp)
             #Refine the corner locations
             corners = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), subpix_criteria)
@@ -61,7 +62,7 @@ if __name__ == "__main__":
             val = cv2.drawChessboardCorners(img, CHECKERBOARD, corners, ret)
             cv2.imwrite(os.path.join(VAL_DIR, name), val)
         else:
-            #print("NG!")
+            print("NG!")
             os.rename(fname, os.path.join(ERR_DIR, name))
     N_OK = len(objpoints)
     K = np.zeros((3, 3))
@@ -86,9 +87,22 @@ if __name__ == "__main__":
     print("D=np.array(" + str(D.tolist()) + ")")
     print("rvecs={}\n".format(rvecs))
     print("tvecs={}\n".format(tvecs))
-    with open(OUTPUT_FILE, "wb") as f:
-        data = [_img_shape, rms, K, D, rvecs, tvecs]
-        pickle.dump(data, f)
+    ext = OUTPUT_FILE.split('.')[-1]
+    if ext == 'dat':
+        with open(OUTPUT_FILE, "wb") as f:
+            data = [_img_shape, rms, K, D, rvecs, tvecs]
+            pickle.dump(data, f)
+    elif ext == 'json':
+        with open(OUTPUT_FILE, "w") as f:
+            data = {
+                'dim': _img_shape,
+                'rms': rms,
+                'K': K.tolist(),
+                'D': D.tolist(),
+                'rvecs': rvecs,
+                'tvecs': tvecs
+        }
+            json.dump(data, f)
     # file = open(OUTPUT_FILE, "w+")
     # file.write("Found " + str(N_OK) + " valid images for calibration\n")
     # file.write("DIM=" + str(_img_shape[::-1]) + "\n")

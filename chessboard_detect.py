@@ -27,9 +27,9 @@ if __name__ == "__main__":
                     type=str, default="inp")
     parser.add_argument("-c", "--checkerboard", help="Checkboard shape (default is 7,10)", type=lambda s: [int(item) for item in s.split(',')], default = [7, 10])
     parser.add_argument("-w", "--win_size", help="Square size (default is 11)", type=int, default=11)
-    parser.add_argument("-o", "--output", help="Path to the output folder", type=str, default="out")
-    parser.add_argument("-e", "--error", help="Path to the error folder", type=str, default="err")
-    parser.add_argument("-r", "--record_file", help="Path to save corner detection file", type=str, default="detections.pickle")
+    parser.add_argument("-o", "--output", help="Path to the output folder (detection result images)", type=str, default="out")
+    parser.add_argument("-e", "--error", help="Path to the error folder (images that cannot be fully detected)", type=str, default="err")
+    parser.add_argument("-r", "--record_file", help="Path to save corner detection file (json)", type=str, default="detections.json")
     args = parser.parse_args()
     
     INPUT = args.input
@@ -104,7 +104,7 @@ if __name__ == "__main__":
             stamps.append(fnames[idx])
         else:
             print("NG!")
-            os.rename(fnames[idx], os.path.join(ERR_DIR, name)) 
+            os.rename(fnames[idx], os.path.join(ERR_DIR, names[idx])) 
     
     # data = dict()
     # for stamp, objpoint, imgpoint in zip(stamps, objpoints, imgpoints):

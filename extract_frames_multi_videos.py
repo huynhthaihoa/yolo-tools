@@ -120,6 +120,6 @@ if __name__ == "__main__":
                 cv2.imwrite(framename, frame)
                 print(".", end="", flush=True)
             i += 1
-        print('Extract video {0} finished!', inputPath)
+        print(f'Extract video {inputPath} finished!')
     
     print("Extract all videos finished!")

@@ -72,8 +72,9 @@ if __name__ == "__main__":
                     type=int, default=1)
     parser.add_argument("-p", "--prefix", help="Image prefix (prefix of extracted image name, default is video name)", 
                     type=str, default="")
-    parser.add_argument("-d", "--divide", help="Divide into subfolder corresponding to each video (default is True)",
-                                            type=lambda x: bool(strtobool(x)), default="True")
+    parser.add_argument("-d", "--divide", help="Divide into subfolder corresponding to each video",
+                                        action="store_true")
+    parser.add_argument("-t", "--time_stamp", help="Use timestamp suffix", action="store_true")
     args = parser.parse_args()
     out = args.output
     entryIdx = args.entry
@@ -100,7 +101,7 @@ if __name__ == "__main__":
         print("# of digits:", nDigits)
         name = os.path.basename(inputPath).split('.')[0]
         subFoldName = out
-        if args.divide == True:
+        if args.divide:
             subFoldName = out + name
             if os.path.isdir(subFoldName) is False:
                 os.mkdir(subFoldName)
@@ -115,7 +116,10 @@ if __name__ == "__main__":
                 print("Can't receive frame (stream end?). Exiting ...")
                 break
             if(i % freq == 0):
-                framename = subFoldName + name + '_' + getTimeStamp(i, fps) + '.jpg' # getSuffix(nDigits, i + entryIdx) + '.png'
+                if args.time_stamp:
+                    framename = subFoldName + name + "_" + getTimeStamp(nDigits, fps) + '.jpg'
+                else:
+                    framename = subFoldName + name + "_" + getSuffix(nDigits, i + entryIdx) + '.jpg'
             #print(framename)
                 cv2.imwrite(framename, frame)
                 print(".", end="", flush=True)
